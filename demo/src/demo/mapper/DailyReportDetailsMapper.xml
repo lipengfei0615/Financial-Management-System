@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="demo.mapper.DailyReportDetailsMapper">
+	<resultMap id="resultMap" type="demo.model.DailyReportDetails">
+		<id property="id" column="id" jdbcType="VARCHAR" />
+		<result property="id" column="id" />
+		<result property="year" column="year" />
+		<result property="month" column="month" />
+		<result property="dailyReportId" column="dailyReportId" />
+		<result property="categorize" column="categorize" />
+		<result property="name" column="name" />
+		<result property="cash" column="cash" />
+		<result property="card" column="card" />
+		<result property="total" column="total" />
+	</resultMap>
+
+	<select id="isExtis" parameterType="string" resultType='int'>
+		select count(*) from t_daily_report_details where id = #{id}
+	</select>
+
+	<select id="getDailyReportDetails" parameterType="map" resultMap="resultMap">
+		SELECT
+			*
+		FROM
+			t_daily_report_details
+		WHERE dailyReportId = #{dailyReportId}
+		ORDER BY categorize ASC
+	</select>
+	
+	<select id="getMonthReportDetails" parameterType="map" resultMap="resultMap">
+		SELECT
+			id,
+			year,
+			month,
+			dailyReportId,
+			categorize,
+			name,
+			sum(cash) AS cash,
+			sum(card) AS card,
+			sum(total) AS total
+		FROM
+			t_daily_report_details
+		WHERE
+			year = #{year} AND month = #{month}
+		GROUP BY
+			categorize	
+		ORDER BY categorize ASC
+	</select>
+
+	<insert id="insert" parameterType="demo.model.DailyReportDetails">
+		INSERT INTO
+			t_daily_report_details
+		(
+			id,
+			year,
+			month,
+			dailyReportId,
+			categorize,
+			name,
+			cash,
+			card,
+			total
+		)
+			VALUES
+		(
+			#{id},
+			#{year},
+			#{month},
+			#{dailyReportId},
+			#{categorize},
+			#{name},
+			#{cash},
+			#{card},
+			#{total}
+		)
+	</insert>
+
+	<update id="update" parameterType="demo.model.DailyReportDetails">
+		UPDATE
+			t_daily_report_details
+		SET
+			categorize = #{categorize},
+			name = #{name},
+			cash = #{cash},
+			card = #{card},
+			total = #{total}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="string">
+		DELETE
+		FROM
+			t_daily_report_details
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteAll" parameterType="string">
+		DELETE
+		FROM
+			t_daily_report_details
+		WHERE dailyReportId = #{id}
+	</delete>
+
+</mapper>

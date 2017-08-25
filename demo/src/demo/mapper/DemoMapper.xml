@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="demo.mapper.DemoMapper">
+	<resultMap id="resultMap" type="demo.model.Demo">
+		<id property="id" column="id" jdbcType="VARCHAR" />
+		<result property="id" column="id" />
+		<result property="year" column="year" />
+		<result property="month" column="month" />
+		<result property="date" column="date" />
+		<result property="bCash" column="bCash" />
+		<result property="bCard" column="bCard" />
+		<result property="lCash" column="lCash" />
+		<result property="lCard" column="lCard" />
+		<result property="dCash" column="dCash" />
+		<result property="dCard" column="dCard" />
+		<result property="orders" column="orders" />
+		<result property="income" column="income" />
+		<result property="expense" column="expense" />
+		<result property="netIncome" column="netIncome" />
+		<result property="recharge" column="recharge" />
+		<result property="unionPay" column="unionPay" />
+		<result property="cardAmount" column="cardAmount" />
+		<result property="cardBalance" column="cardBalance" />
+		<result property="operator" column="operator" />
+		<result property="remark" column="remark" />
+	</resultMap>
+
+	<select id="getPw" resultType='string'>
+		select password from t_user
+	</select>
+	
+	<update id="setPw" parameterType="string">
+		UPDATE
+			t_user
+		SET
+			password = #{password}
+	</update>
+
+	<select id="isExtis" parameterType="string" resultType='int'>
+		select count(*) from t_daily_report where id = #{id}
+	</select>
+
+	<select id="getDailyReport" parameterType="map" resultMap="resultMap">
+		SELECT
+			*
+		FROM
+			t_daily_report
+		WHERE month = #{month} And year = #{year}
+		ORDER BY date ASC
+	</select>
+	
+	<select id="getMonthReport" parameterType="map" resultMap="resultMap">
+		SELECT
+			id,
+			year,
+			month,
+			date,
+			sum(bCash) AS bCash,
+			sum(bCard) AS bCard,
+			sum(lCash) AS lCash,
+			sum(lCard) AS lCard,
+			sum(dCash) AS dCash,
+			sum(dCard) AS dCard,
+			sum(orders) AS orders,
+			sum(income) AS income,
+			sum(expense) AS expense,
+			sum(netIncome) AS netIncome,
+			sum(recharge) AS recharge,
+			sum(unionPay) AS unionPay,
+			sum(cardAmount) AS cardAmount,
+			sum(cardBalance) AS cardBalance
+		FROM
+			t_daily_report
+		WHERE
+			year = #{year}
+		GROUP BY
+			month
+		ORDER BY
+			date ASC
+	</select>
+
+	<insert id="insert" parameterType="demo.model.Demo">
+		INSERT INTO
+			t_daily_report
+		(
+			id,
+			year,
+			month,
+			date,
+			bCash,
+			bCard,
+			lCash,
+			lCard,
+			dCash,
+			dCard,
+			orders,
+			income,
+			expense,
+			netIncome,
+			recharge,
+			unionPay,
+			cardAmount,
+			cardBalance,
+			operator,
+			remark
+		)
+			VALUES
+		(
+			#{id},
+			#{year},
+			#{month},
+			#{date},
+			#{bCash},
+			#{bCard},
+			#{lCash},
+			#{lCard},
+			#{dCash},
+			#{dCard},
+			#{orders},
+			#{income},
+			#{expense},
+			#{netIncome},
+			#{recharge},
+			#{unionPay},
+			#{cardAmount},
+			#{cardBalance},
+			#{operator},
+			#{remark}
+		)
+	</insert>
+
+	<update id="update" parameterType="demo.model.Demo">
+		UPDATE
+			t_daily_report
+		SET
+			date = #{date},
+			bCash = #{bCash},
+			bCard = #{bCard},
+			lCash = #{lCash},
+			lCard = #{lCard},
+			dCash = #{dCash},
+			dCard = #{dCard},
+			orders = #{orders},
+			income = #{income},
+			expense = #{expense},
+			netIncome = #{netIncome},
+			recharge = #{recharge},
+			unionPay = #{unionPay},
+			cardAmount = #{cardAmount},
+			cardBalance = #{cardBalance},
+			operator = #{operator},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="string">
+		DELETE
+		FROM
+			t_daily_report
+		WHERE id = #{id}
+	</delete>
+
+</mapper>
