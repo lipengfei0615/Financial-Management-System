@@ -1,7 +1,7 @@
 # Financial-Management-System
 
-This system is used for financial management in the restaurant.
+•	Completed a restaurant financial system to manage the restaurant weekly or monthly budget using Java with Eclipse IDE and MySQL database
 
-The front-end apply to bootstrap and the back-end apply to Spring MVC + MyBatis framework.
+•	Applied the front-end technologies, such as Bootstrap, Ext JS and CSS to implement flat UI widget design
 
-Database:MySQL
+•	Achieved data interaction at the back-end using Spring MVC and MyBatis and regarded Tomcat as an application server to executes Java servlets and renders Web pages that include Java Server Page coding
